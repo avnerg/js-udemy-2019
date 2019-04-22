@@ -33,8 +33,6 @@ var avner = {
     }
 };
 
-//console.log(avner.name);
-//console.log(avner['name']);
 avner.name = 38;
 avner.hobbies.splice(1,2, 'TaV');
 console.log(avner.getAge(2019));
