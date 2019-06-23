@@ -1,4 +1,4 @@
-var activePlayer, dice, currentScore;
+var activePlayer, dice, currentScore, previousDice;
 var score = [0, 0];
 
 init();
@@ -9,8 +9,16 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
     document.querySelector('.dice').style.display = 'block';
     
     if(dice !== 1){
-        currentScore += dice;
-        document.querySelector('#current-' + activePlayer).innerText = currentScore;
+        if(dice == 6 && previousDice == 6){
+            score[activePlayer] = 0;
+            document.querySelector('#score-' + activePlayer).innerText = score[activePlayer];
+            zeroScoreAndSwitchPlayer();
+        }
+        else{
+            previousDice = dice;
+            currentScore += dice;
+            document.querySelector('#current-' + activePlayer).innerText = currentScore;
+        }
     }
     else if(dice === 1){
         zeroScoreAndSwitchPlayer();
@@ -21,13 +29,13 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
 document.querySelector('.btn-hold').addEventListener('click', function(){
     score[activePlayer] += currentScore;
     document.querySelector('#score-' + activePlayer).innerText = score[activePlayer];
-    if(score[activePlayer] < 10){
+    if(score[activePlayer] < 20){
         zeroScoreAndSwitchPlayer();
     }
     else{
         // Win
         document.querySelector('.btn-roll').disabled = true;
-        document.querySelector('.player-0-panel').classList.add('winner');
+        document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
     }
     
 })
@@ -62,6 +70,7 @@ function switchPlayer(){
 
 function zeroScoreAndSwitchPlayer(){
     currentScore = 0;
+    previousDice = 0;
     document.querySelector('#current-' + activePlayer).innerText = currentScore;
     switchPlayer();
 }
